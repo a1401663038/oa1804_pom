@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop" xmlns:bean="http://www.springframework.org/schema/aop"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd">
+    <!-- shiro的注解驱动-->
+    <aop:config expose-proxy="true"></aop:config>
+    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
+        <property name="securityManager" ref="securityManager"/>
+    </bean>
+    <!--注解驱动 -->
+    <mvc:annotation-driven/>
+    <!-- 静态文件-->
+    <mvc:default-servlet-handler/>
+    <!-- 扫Controller包-->
+    <context:component-scan base-package="com.qf.oa.controller"/>
+
+    <context:property-placeholder location="classpath:config.properties"/>
+
+    <!--
+		视图解析器 - 逻辑视图需要（非逻辑视图无需视图解析器）
+	 -->
+    <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
+        <!-- 配置前缀 -->
+        <property name="prefix" value="/WEB-INF/jsp/"/>
+        <!-- 配置后缀 -->
+        <property name="suffix" value=".jsp"/>
+    </bean>
+
+        <!--    自定义文件上传解析器-->
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+            <!--        设置文件上传的默认编码格式-->
+            <property name="defaultEncoding" value="utf-8"></property>
+            <!--        显示文件上传的大小-->
+            <property name="maxUploadSize" value="10485760"></property>
+    </bean>
+
+
+</beans>
